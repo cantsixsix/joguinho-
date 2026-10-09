@@ -465,7 +465,7 @@ export default function OpenWorldDrive() {
         position: "relative"
       }}>
         <div style={{
-          position: "absolute", inset: 0, opacity: 0.06,
+          position: "absolute", inset: 0, opacity: 0.06, pointerEvents: "none",
           backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 40px, #fff 40px, #fff 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, #fff 40px, #fff 41px)"
         }} />
         <div style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)", fontWeight: 900, letterSpacing: "-2px", marginBottom: 8, textShadow: "0 0 40px rgba(230,57,70,0.5)" }}>
@@ -487,7 +487,7 @@ export default function OpenWorldDrive() {
         </button>
         <div style={{ marginTop: 50, opacity: 0.5, fontSize: "0.85rem", textAlign: "center", lineHeight: 1.8 }}>
           <div><b>W / ↑</b> — Accelerate &nbsp;&nbsp; <b>S / ↓</b> — Brake / Reverse</div>
-          <div><b>A / ↑</b> — Steer Left &nbsp;&nbsp; <b>D / →</b> — Steer Right</div>
+          <div><b>A / ←</b> — Steer Left &nbsp;&nbsp; <b>D / →</b> — Steer Right</div>
         </div>
       </div>
     );
