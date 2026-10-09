@@ -1,0 +1,34 @@
+name: Segredos
+
+# Bloqueia chaves, senhas e arquivos de assinatura antes que fiquem públicos.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Arquivos que nunca devem ir para o Git
+        run: |
+          proibidos=$(git -c core.quotepath=off ls-files | grep -E '(^|/)(\.env(\.[A-Za-z0-9_-]+)?|[^/]*\.(keystore|jks|pem|p12|pfx|key)|signing-key-info\.txt|id_rsa|id_ed25519|service-account[^/]*\.json)$' \
+            | grep -vE '\.env\.(example|sample|template)$' || true)
+          if [ -n "$proibidos" ]; then
+            echo "::error::Arquivos sensíveis no repositório. Remova-os, adicione ao .gitignore e troque as chaves/senhas que eles contêm:"
+            echo "$proibidos"
+            exit 1
+          fi
+          echo "Nenhum arquivo sensível encontrado."
+
+      - name: Procurar chaves e senhas no código (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
